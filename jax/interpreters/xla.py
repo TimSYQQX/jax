@@ -14,6 +14,7 @@
 
 
 from collections import defaultdict, deque
+import collections.abc
 import dataclasses
 import functools
 from functools import partial, partialmethod
@@ -442,7 +443,8 @@ def jaxpr_subcomp(ctx: TranslationContext, jaxpr: core.Jaxpr,
       ans = rule(ctx, map(aval, eqn.invars), map(aval, eqn.outvars),
                  *in_nodes, **eqn.params)
 
-    assert all(isinstance(x, xe.XlaOp) for x in ans), ans
+    assert isinstance(ans, collections.abc.Sequence), (ans, eqn)
+    assert all(isinstance(x, xe.XlaOp) for x in ans), (ans, eqn)
     map(ctx.builder.get_shape, ans)  # force xla to do shape error checking
     ctx.builder.clear_op_metadata()
     _partitionmap(write, eqn.outvars, ans)
