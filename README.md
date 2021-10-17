@@ -429,14 +429,30 @@ Next, run
 
 ```bash
 pip install --upgrade pip
-pip install --upgrade "jax[cuda111]" -f https://storage.googleapis.com/jax-releases/jax_releases.html  # Note: wheels only available on linux.
+# Installs the wheel compatible with CUDA 11 and cuDNN 8.2
+pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_releases.html  # Note: wheels only available on linux.
 ```
 
 The jaxlib version must correspond to the version of the existing CUDA
 installation you want to use:
-* For CUDA 11.1, 11.2, or 11.3, use `cuda111`. The same wheel should work for
-  CUDA 11.x releases from 11.1 onwards.
+* For CUDA 11.1, 11.2, or 11.3, use `cuda11`. The same wheel should work for
+  CUDA 11.x releases from 11.1 onwards. See below for explicit install commands.
+  * The supported cuDNN versions for `cuda11` are:
+    * cuDNN 8.2
+    * cuDNN 8.0.5
 * Older CUDA versions are not supported.
+
+You can be explicit with the CUDA version and cuDNN version supported to install jaxlib:
+
+```bash
+pip install --upgrade pip
+
+# Installs the wheel compatible with Cuda 11 and cudnn 8.2
+pip install jax[cuda=11,cudnn=82] -f https://storage.googleapis.com/jax-releases/jax_releases.html
+
+# Installs the wheel compatible with Cuda 11 and cudnn 8.0.5
+pip install jax[cuda=11,cudnn=805] -f https://storage.googleapis.com/jax-releases/jax_releases.html
+```
 
 You can find your CUDA version with the command:
 
